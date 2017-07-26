@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:caelum="http://java.sun.com/jsf/composite/components">
+<ui:composition template="_template.xhtml">
+	<ui:define name="corpo">
+		
+		<h2>
+		<h:outputText value="Novo Produto" rendered="#{empty produtoBean.produto.id}">
+		</h:outputText>
+		<h:outputText value="Editar Produto" rendered="#{not empty produtoBean.produto.id}">
+		</h:outputText>
+		</h2>
+		<fieldset>
+		<legend>Dados do Produto
+		</legend>
+	
+		<h:form id="frmProduto">
+				<h:inputHidden value="#{produtoBean.produto.id}" />
+				
+					<caelum:campotexto id="nome" label="Nome: " value="#{produtoBean.produto.nome}"/>
+		
+		
+					<h:outputLabel value="Descrição:" for="descricao" />
+					<h:inputText id="descricao"  value="#{produtoBean.produto.descricao}"/>
+		
+					<h:outputLabel value="Preço:" for="preco" />
+					<h:inputText id="preco"  value="#{produtoBean.produto.preco}"/>
+		
+					<h:commandButton value="Gravar"  action="#{produtoBean.grava}">
+						<f:ajax render=":frmProduto :listaProdutos" execute="@form" />
+					</h:commandButton>
+					
+					<h:commandButton value="Cancelar edição"  action="#{produtoBean.cancela()}">
+						<f:ajax render="@form" execute="@this" />
+					</h:commandButton>
+
+		</h:form>
+		</fieldset>
+		<fieldset>
+		<h2>Listagem de Produtos</h2>
+		<h:form id="listaProdutos">
+			<h:dataTable id="tblProdutos" value="#{produtoBean.produtos}" var="produto"
+			styleClass="dados" rowclasses="impar,par">
+				<h:column>
+					<f:facet name="header">Nome</f:facet>
+					#{produto.nome}
+					<f:facet name="footer">#{produtoBean.soma()}</f:facet>
+				</h:column>
+			
+				<h:column>
+					<f:facet name="header">Descrição</f:facet>
+					#{produto.descricao}
+				</h:column>os}" />
+					
+				
+				<h:column>
+					<f:facet name="header">Preço</f:facet>
+					#{produto.preco}
+				</h:column>
+	
+				<h:column>
+					<f:facet name="header">Ações</f:facet>
+	
+					<h:commandButton action="#{produtoBean.remove(produto)}" value="Remover ">
+					 	<f:ajax render="@form" execute="@this" />
+					
+					</h:commandButton>
+					
+					<h:commandButton value="Alterar " >
+						<f:setPropertyActionListener value="#{produto}" target="#{produtoBean.produto}">
+						 	<f:ajax render=":frmProduto" execute="@this" />
+						
+						</f:setPropertyActionListener>
+						
+					</h:commandButton>
+				</h:column>			
+			</h:dataTable>
+		</h:form>
+		</fieldset>
+	</ui:define>
+</ui:composition>
+
+</html>
