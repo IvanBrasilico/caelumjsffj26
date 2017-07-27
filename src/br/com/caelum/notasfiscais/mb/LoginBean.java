@@ -2,6 +2,9 @@ package br.com.caelum.notasfiscais.mb;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
+import javax.faces.application.FacesMessage;
+import javax.faces.validator.ValidatorException;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -10,7 +13,7 @@ import java.io.Serializable;
 import br.com.caelum.notasfiscais.dao.UsuarioDao;
 import br.com.caelum.notasfiscais.modelo.Usuario;
 
-@Named @RequestScoped
+@Named @ViewScoped
 public class LoginBean implements Serializable {
 	/**
 	 * 
@@ -27,10 +30,14 @@ public class LoginBean implements Serializable {
 	
 	@Inject
 	private Event<Usuario> eventoLogin;
+	
+	private String erro;
+	
 
-	public String loga(){
-		String result = "login?faces-redirect=true";
+	public String loga() throws ValidatorException {
+		String result = "";
 		Boolean existe = false;
+		setErro("");
 		if (this.getUsuario() != null){
 			existe = dao.existe(getUsuario());
 		}
@@ -40,7 +47,9 @@ public class LoginBean implements Serializable {
 			result = "produto?faces-redirect=true";
 		} else {
 			this.usuario = new Usuario();
-			usuarioLogado.logout();
+			System.out.println("Login inválido");
+			setErro("Login inválido");
+			//throw new ValidatorException(new FacesMessage("Login inválido!!!"));
 		}
 		return result;
 	}
@@ -58,6 +67,14 @@ public class LoginBean implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public String getErro() {
+		return erro;
+	}
+
+	public void setErro(String erro) {
+		this.erro = erro;
 	}
 
 }

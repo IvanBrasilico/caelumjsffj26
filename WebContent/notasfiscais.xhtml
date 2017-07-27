@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+	<ui:define name="corpo">
+
+	<p:fieldset legend="Notas Fiscais">
+		<h:form id="listaNotas">
+			  <p:dataTable  id="tblNotas" value="#{listaNotasFiscaisBean.dataModel}"
+					var="notaFiscal" lazy="true"
+					rows="5" paginator="true">
+					<p:column headertext="CNPJ">
+						#{notaFiscal.cnpj}
+					</p:column>
+					<p:column headertext="Data">
+					   <h:outputText value="#{notaFiscal.data.time}">
+					   		<f:convertDateTime pattern="dd/MM/yyyy"/>
+					   </h:outputText>
+				   </p:column>
+					<p:column headertext="Valor">
+						<h:outputText value="#{notaFiscal.getItensSoma()}">
+							<f:convertNumber type="currency" currencySymbol="R$"
+								locale="pt_BR" />
+						</h:outputText>
+					</p:column>
+
+				    <p:column headertext="Itens">
+						#{notaFiscal.itens}
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+		</p:fieldset>
+		
+
+	</ui:define>
+</ui:composition>
+</html>
+

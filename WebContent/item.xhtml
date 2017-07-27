@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+	<ui:define name="corpo">
+       <h:form id="frmItem">
+		<fieldset>
+			<legend>Produto </legend>
+
+				<h:outputLabel value="Produto" for="produto" />
+
+				<h:selectOneMenu id="produto" value="#{notaFiscalBean.idProduto}">
+					<f:selectItems value="#{produtoBean.produtos}" var="produto"
+						itemLabel="#{produto.nome}" itemValue="#{produto.id}" />
+
+				</h:selectOneMenu>
+
+				<h:outputLabel value="Qtde" for="qtde" />
+				<p:inputNumber id="qtde" value="#{notaFiscalBean.item.quantidade}" 
+				decimalPlaces="0"/>
+
+				<p:commandButton value="Incluir" action="#{notaFiscalBean.addItem}" 
+				   update=":listaItens" process="@form" />
+				
+				<p:commandButton value="Gravar" action="#{notaFiscalBean.grava}" />
+					
+				
+
+				<p:commandButton value="Voltar" action="notafiscal?faces-redirect=true"/>
+
+		</fieldset>
+		</h:form>
+		<h:form id="listaItens">
+		<fieldset>
+			<h2>Itens</h2>
+			  <p:dataTable  id="tblItens" value="#{notaFiscalBean.nota.itens}"
+					var="item" styleClass="dados" rowclasses="impar,par"
+					rows="5" paginator="true">
+					<p:column>
+						<f:facet name="header">Produto</f:facet>
+						#{item.produto.nome}
+						<f:facet name="footer">
+							<h:outputText value="#{notaFiscalBean.soma()}">
+								<f:convertNumber type="currency" currencySymbol="R$"
+									locale="pt_BR" />
+							</h:outputText>
+						</f:facet>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Valor unitário</f:facet>
+						<h:outputText value="#{item.valorUnitario}">
+							<f:convertNumber type="currency" currencySymbol="R$"
+								locale="pt_BR" />
+						</h:outputText>
+					</p:column>
+
+
+					<p:column>
+						<f:facet name="header">Qtde</f:facet>
+					    #{item.quantidade}
+				   </p:column>
+
+					<p:column>
+						<f:facet name="header">Valor Total</f:facet>
+						<h:outputText value="#{item.total}">
+							<f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR" />
+						</h:outputText>
+
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Ações</f:facet>
+
+						<p:commandButton action="#{notaFiscalBean.remove(item)}" value="Remover "
+							update="@form" process="@this" />
+
+						
+
+					</p:column>
+				</p:dataTable>
+		</fieldset>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>
+

@@ -9,9 +9,15 @@
 		<fieldset>
 		<legend>Informe usuário e senha
 		</legend>
+		
 	
 		<h:form id="frmLogin">
-					<h:messages for="frmLogin"></h:messages>
+					<h:messages  styleClass="erros" />
+					
+					<h2>
+						<h:outputText value="#{loginBean.erro}"/>
+		
+					</h2>
 		
 					<h:outputLabel value="Usuário:" for="usuario" />
 					<h:inputText id="usuario" value="#{loginBean.usuario.login}"/>
