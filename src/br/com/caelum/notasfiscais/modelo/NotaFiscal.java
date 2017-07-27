@@ -55,6 +55,16 @@ public class NotaFiscal {
 	public List<Item> getItens() {
 		return itens;
 	}
+	
+	public Double getItensSoma() {
+		Double soma=0.0;
+		for (Item item:itens){
+		  if (item.getTotal() !=null)
+			  soma += item.getTotal();
+			
+		}
+		return soma;
+	}
 
 	public void setItens(List<Item> itens) {
 		this.itens = itens;

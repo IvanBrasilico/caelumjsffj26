@@ -4,5 +4,10 @@
 	bean-discovery-mode="all">
 
 	<!-- Aqui vao as configuracoes do CDI -->
+	<interceptors>
+		<class>
+			br.com.caelum.notasfiscais.tx.TransactionManager
+		</class>
+	</interceptors>
 
 </beans>	

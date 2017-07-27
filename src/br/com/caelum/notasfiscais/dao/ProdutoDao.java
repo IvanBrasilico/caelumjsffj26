@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 
 import br.com.caelum.notasfiscais.modelo.Produto;
+import br.com.caelum.notasfiscais.tx.Transacional;
 
 
 public class ProdutoDao implements Serializable{
@@ -17,35 +18,24 @@ public class ProdutoDao implements Serializable{
 	@Inject
 	private EntityManager manager;
 
+	
+	@Transacional
 	public void adiciona(Produto produto) {
-		
-		manager.getTransaction().begin();
-
 		//persiste o objeto
 		manager.persist(produto);
-		
-		manager.getTransaction().commit();
 
 	}
 
-
+	
+	@Transacional
 	public void remove(Produto produto) {
-
-		manager.getTransaction().begin();
-
 		manager.remove(manager.merge(produto));
-
-		manager.getTransaction().commit();
-
 	}
 
+	@Transacional
 	public void atualiza(Produto produto) {
-		manager.getTransaction().begin();
-
 		manager.merge(produto);
 		
-		manager.getTransaction().commit();
-
 	}
 
 	public List<Produto> buscaPorNome(String nome) {
